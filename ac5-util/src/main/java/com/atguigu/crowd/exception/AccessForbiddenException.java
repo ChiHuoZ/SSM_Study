@@ -2,7 +2,7 @@ package com.atguigu.crowd.exception;
 
 /**
  * 表示用户没有登录就访问受保护资源时抛出的异常
- * @author yinchen
+ * @author Lenovo
  *
  */
 public class AccessForbiddenException extends RuntimeException {

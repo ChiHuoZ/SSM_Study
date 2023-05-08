@@ -2,7 +2,7 @@ package com.atguigu.crowd.exception;
 
 /**
  * 登录失败后抛出的异常
- * @author yinchen
+ * @author Lenovo
  *
  */
 public class LoginFailedException extends RuntimeException {
