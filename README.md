@@ -13,6 +13,6 @@
 │   │   ├──entity     //属性信息
 ├── ac5-util
 │   │   ├──constant   //基本变量定义
-│   │   ├──exception  //
-│   │   ├──util
-└── ac6-reverse
+│   │   ├──exception  //异常处理
+│   │   ├──util       //加密等工具
+└── ac6-reverse       //反向构造
