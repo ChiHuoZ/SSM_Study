@@ -3,24 +3,26 @@ package com.atguigu.crowd.mvc.handler;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
+// import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+// import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.atguigu.crowd.entity.Role;
 import com.atguigu.crowd.service.api.RoleService;
 import com.atguigu.crowd.util.ResultEntity;
 import com.github.pagehelper.PageInfo;
 
-@Controller
+@RestController
 public class RoleHandler {
 	
 	@Autowired
 	private RoleService roleService;
 	
-	@ResponseBody
+	// @ResponseBody
 	@RequestMapping("/role/remove/by/role/id/array.json")
 	public ResultEntity<String> removeByRoleIdAarry(@RequestBody List<Integer> roleIdList) {
 		
@@ -29,7 +31,7 @@ public class RoleHandler {
 		return ResultEntity.successWithoutData();
 	}
 	
-	@ResponseBody
+	// @ResponseBody
 	@RequestMapping("/role/update.json")
 	public ResultEntity<String> updateRole(Role role) {
 		
@@ -38,7 +40,7 @@ public class RoleHandler {
 		return ResultEntity.successWithoutData();
 	}
 	
-	@ResponseBody
+	// @ResponseBody
 	@RequestMapping("/role/save.json")
 	public ResultEntity<String> saveRole(Role role) {
 		
@@ -47,7 +49,8 @@ public class RoleHandler {
 		return ResultEntity.successWithoutData();
 	}
 	
-	@ResponseBody
+	@PreAuthorize("hasRole('部长')")
+	// @ResponseBody
 	@RequestMapping("/role/get/page/info.json")
 	public ResultEntity<PageInfo<Role>> getPageInfo(
 				@RequestParam(value="pageNum", defaultValue="1") Integer pageNum,

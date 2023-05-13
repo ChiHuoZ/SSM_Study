@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.atguigu.crowd.constant.CrowdConstant;
@@ -31,13 +32,17 @@ public class AdminServiceImpl implements AdminService {
 	private AdminMapper adminMapper;
 	
 	private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public void saveAdmin(Admin admin) {
 		
 		// 1.密码加密
 		String userPswd = admin.getUserPswd();
-		userPswd = CrowdUtil.md5(userPswd);
+		// userPswd = CrowdUtil.md5(userPswd);
+		userPswd = passwordEncoder.encode(userPswd);
 		admin.setUserPswd(userPswd);
 		
 		// 2.生成创建时间
@@ -153,6 +158,50 @@ public class AdminServiceImpl implements AdminService {
 				throw new LoginAcctAlreadyInUseForUpdateException(CrowdConstant.MESSAGE_LOGIN_ACCT_ALREADY_IN_USE);
 			}
 		}
+	}
+
+	@Override
+	public void saveAdminRoleRelationship(Integer adminId, List<Integer> roleIdList) {
+		
+		// 旧数据如下：
+		// adminId	roleId
+		// 1		1（要删除）
+		// 1		2（要删除）
+		// 1		3
+		// 1		4
+		// 1		5
+		// 新数据如下：
+		// adminId	roleId
+		// 1		3（本来就有）
+		// 1		4（本来就有）
+		// 1		5（本来就有）
+		// 1		6（新）
+		// 1		7（新）
+		// 为了简化操作：先根据adminId删除旧的数据，再根据roleIdList保存全部新的数据
+		
+		// 1.根据adminId删除旧的关联关系数据
+		adminMapper.deleteOLdRelationship(adminId);
+		
+		// 2.根据roleIdList和adminId保存新的关联关系
+		if(roleIdList != null && roleIdList.size() > 0) {
+			adminMapper.insertNewRelationship(adminId, roleIdList);
+		}
+	}
+
+	@Override
+	public Admin getAdminByLoginAcct(String username) {
+		
+		AdminExample example = new AdminExample();
+		
+		Criteria criteria = example.createCriteria();
+		
+		criteria.andLoginAcctEqualTo(username);
+		
+		List<Admin> list = adminMapper.selectByExample(example);
+		
+		Admin admin = list.get(0);
+		
+		return admin;
 	}
 
 }
