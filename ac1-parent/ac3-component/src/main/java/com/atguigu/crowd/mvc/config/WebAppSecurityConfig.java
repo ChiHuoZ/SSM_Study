@@ -82,6 +82,8 @@ public class WebAppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.permitAll()                    // 针对静态资源进行设置，无条件访问
 			.antMatchers("/ztree/**")       // 针对静态资源进行设置，无条件访问
 			.permitAll()
+			.antMatchers("/admin/save1.html")
+			.permitAll()
 			.antMatchers("/admin/get/page.html")	// 针对分页显示Admin数据设定访问控制
 			// .hasRole("经理")					// 要求具备经理角色
 			.access("hasRole('经理') OR hasAuthority('user:get')")	// 要求具备“经理”角色和“user:get”权限二者之一
@@ -103,8 +105,8 @@ public class WebAppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.disable()						// 禁用
 			.formLogin()					// 开启表单登录的功能
 			.loginPage("/admin/to/login/page.html")	// 指定登录页面
+			.defaultSuccessUrl("/admin/to/main/page.html",true)	// 指定登录成功后前往的地址
 			.loginProcessingUrl("/security/do/login.html")	// 指定处理登录请求的地址
-			.defaultSuccessUrl("/admin/to/main/page.html")	// 指定登录成功后前往的地址
 			.usernameParameter("loginAcct")	// 账号的请求参数名称
 			.passwordParameter("userPswd")	// 密码的请求参数名称
 			.and()

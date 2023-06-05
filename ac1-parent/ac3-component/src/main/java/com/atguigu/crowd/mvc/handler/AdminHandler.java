@@ -59,6 +59,14 @@ public class AdminHandler {
 		
 		return "redirect:/admin/get/page.html?pageNum="+Integer.MAX_VALUE;
 	}
+
+	@RequestMapping("/admin/save1.html")
+	public String save1(Admin admin) {
+
+		adminService.saveAdmin(admin);
+
+		return "redirect:/admin/get/page.html?pageNum="+Integer.MAX_VALUE;
+	}
 	
 	@RequestMapping("/admin/remove/{adminId}/{pageNum}/{keyword}.html")
 	public String remove(

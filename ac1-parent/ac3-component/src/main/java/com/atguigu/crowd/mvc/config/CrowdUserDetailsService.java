@@ -53,7 +53,7 @@ public class CrowdUserDetailsService implements UserDetailsService {
 			// 注意：不要忘了加前缀！
 			String roleName = "ROLE_" + role.getName();
 			
-			SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(roleName);
+			SimpleGrantedAuthority 	simpleGrantedAuthority = new SimpleGrantedAuthority(roleName);
 			
 			authorities.add(simpleGrantedAuthority);
 		}
